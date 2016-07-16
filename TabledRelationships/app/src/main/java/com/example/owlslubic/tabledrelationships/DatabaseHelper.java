@@ -1,10 +1,12 @@
 package com.example.owlslubic.tabledrelationships;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.view.View;
 
 /**
  * Created by owlslubic on 7/15/16.
@@ -14,7 +16,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "employees.db";
 
-    public static final String EMPLOYEE_TABLE_NAME = "employee table";
+    public static final String EMPLOYEE_TABLE_NAME = "employee";
     public static final String COL_SSN = "_id";
     public static final String COL_FIRST_NAME = "First";
     public static final String COL_LAST_NAME = "Last";
@@ -37,8 +39,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_EMPLOYEES);
-        db.execSQL(SQL_CREATE_JOBS);
+//        db.execSQL(SQL_CREATE_EMPLOYEES);
+//        db.execSQL(SQL_CREATE_JOBS);
+        db.execSQL("CREATE TABLE " +
+            EMPLOYEE_TABLE_NAME + " (" +
+            COL_SSN + " INTEGER PRIMARY KEY, " +
+            COL_FIRST_NAME + " TEXT, " +
+            COL_LAST_NAME + " TEXT, " +
+            COL_YOB + " INT, " +
+            COL_CITY + " TEXT)");
 
     }
 
@@ -50,20 +59,20 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //create tables
-    private static final String SQL_CREATE_EMPLOYEES = "CREATE TABLE " +
-            EMPLOYEE_TABLE_NAME + " (" +
-            COL_SSN + " INTEGER PRIMARY KEY, " + //setting the datatype as integer here,
-            COL_FIRST_NAME + " TEXT, " +
-            COL_LAST_NAME + " TEXT, " +
-            COL_YOB + " INT, " +
-            COL_CITY + " TEXT )";
-    private static final String SQL_CREATE_JOBS = "CREATE TABLE " +
-            JOB_TABLE_NAME + " (" +
-            COL_SSN_JOB + " INTEGER PRIMARY KEY, FOREIGN KEY(" + COL_SSN_JOB +
-            ") REFERENCES " + EMPLOYEE_TABLE_NAME + "(" + COL_SSN + ") )" +
-            COL_COMPANY + " TEXT, " +
-            COL_SALARY + " INT, " +
-            COL_EXPERIENCE + " INT )";
+//    private static final String SQL_CREATE_EMPLOYEES = "CREATE TABLE " +
+//            EMPLOYEE_TABLE_NAME + " (" +
+//            COL_SSN + " INTEGER PRIMARY KEY, " + //setting the datatype as integer here,
+//            COL_FIRST_NAME + " TEXT, " +
+//            COL_LAST_NAME + " TEXT, " +
+//            COL_YOB + " INT, " +
+//            COL_CITY + " TEXT)";
+//    private static final String SQL_CREATE_JOBS = "CREATE TABLE " +
+//            JOB_TABLE_NAME + " (" +
+//            COL_SSN_JOB + " INTEGER PRIMARY KEY, FOREIGN KEY (" + COL_SSN_JOB +
+//            ") REFERENCES " + EMPLOYEE_TABLE_NAME + " (" + COL_SSN + ") )" +
+//            COL_COMPANY + " TEXT, " +
+//            COL_SALARY + " INT, " +
+//            COL_EXPERIENCE + " INT)";
     private static final String SQL_DELETE_EMPLOYEES = "DROP TABLE IF EXISTS " + EMPLOYEE_TABLE_NAME;
     private static final String SQL_DELETE_JOBS = "DROP TABLE IF EXISTS " + JOB_TABLE_NAME;
 
@@ -75,6 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //insert row to employee table helper method
+    //near "of": syntax error (code 1): , while compiling: INSERT INTO employee(First,_id,Last,city,year of birth) VALUES (?,?,?,?,?)
     public void insertRowEmployeeTable(Employee employee) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
@@ -84,6 +94,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_YOB, employee.getmYearOfBirth());
         values.put(COL_CITY, employee.getmCity());
         db.insertOrThrow(EMPLOYEE_TABLE_NAME, null, values);
+        db.close();
     }
 
     //insert row to job table helper method
@@ -95,8 +106,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         values.put(COL_SALARY, job.getmSalary());
         values.put(COL_EXPERIENCE, job.getmExperience());
         db.insertOrThrow(JOB_TABLE_NAME, null, values);
+        db.close();
 
-        //do i need to close the db when i do getwritable??
     }
 
 
@@ -105,50 +116,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
     //method that queries database and selects fullname of anyone working at macys
-    public String getFullNameOfMacysEmployee() {
+    public Cursor getFullNameOfMacysEmployee() {
         SQLiteDatabase db = getReadableDatabase();
-        String result = "";
         String query = "SELECT " + COL_FIRST_NAME + ", " + COL_LAST_NAME + " FROM " + EMPLOYEE_TABLE_NAME + " JOIN " + JOB_TABLE_NAME +
                 " ON " + JOB_TABLE_NAME + "." + COL_SSN_JOB + " = " + EMPLOYEE_TABLE_NAME + "." + COL_SSN +
-                " WHERE " + COL_COMPANY + " LIKE " + "'Macy%'";
+                " WHERE " + COL_COMPANY + " LIKE 'Macy%'";
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                result += cursor.getString(cursor.getColumnIndex(COL_FIRST_NAME)) + " " + cursor.getString(cursor.getColumnIndex(COL_LAST_NAME));
-                cursor.moveToNext();
-                //this will return two names in one string, so i need to parse it into an array and use arrayadapter or return a cursor and use cursor adapter
-            }
-        }
         cursor.close();
-        return result;
+        return cursor;
     }
 
 
     //method that queries, selects companies in boston
-    public String getBostonCompanies() {
+    public Cursor getBostonCompanies() {
         SQLiteDatabase db = getReadableDatabase();
-        String result = "";
         String query = "SELECT " + COL_COMPANY + " FROM " + JOB_TABLE_NAME + " JOIN " + EMPLOYEE_TABLE_NAME +
                 " ON " + JOB_TABLE_NAME + "." + COL_SSN_JOB + " = " + EMPLOYEE_TABLE_NAME + "." + COL_SSN +
-                " WHERE " + COL_CITY + " = " + "'Boston'";
+                " WHERE " + COL_CITY + " = 'Boston'";
         Cursor cursor = db.rawQuery(query, null);
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                result += cursor.getString(cursor.getColumnIndex(COL_COMPANY));
-                cursor.moveToNext();
-            }
-        }
         cursor.close();
-        return result;
+        return cursor;
     }
     //
     //method that queries, selects company with highest salary
-//    public String getHighestSalary(){
-//        SQLiteDatabase db = getReadableDatabase();
+    public Cursor getHighestSalary(){
+        SQLiteDatabase db = getReadableDatabase();
 //        String result = "";
 //        String query = "SELECT "+COL_COMPANY+" FROM "+JOB_TABLE_NAME+" JOIN "+EMPLOYEE_TABLE_NAME+
 //                " ON "+JOB_TABLE_NAME+"."+COL_SSN_JOB+" = "+EMPLOYEE_TABLE_NAME+"."+COL_SSN+
-//                " WHERE "+MAX(COL_SALARY)";
+//                " ORDER BY "+ COL_SALARY + " DESC";
 //        Cursor cursor = db.rawQuery(query,null);
 //        if(cursor.moveToFirst()){
 //            while(!cursor.isAfterLast()){
@@ -158,54 +154,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        }
 //        cursor.close();
 //        return result;
-//    }
-    //select col_company from jobtable order by salary
-    //only take the one at index 0?
+
+        Cursor cursor = db.query(JOB_TABLE_NAME,new String[]{COL_COMPANY},null,null,null,null,COL_SALARY + " DESC");
+        cursor.close();
+        return cursor;
+    }
 
 
-    //method that takes dialog input, converts it to a single string string (aka one row), and inserts it into database //might have to break it up into 2 methods?
 
-
-//    public void populateTable() {
-//        Context context = MainActivity.this;
-//        DatabaseHelper helper = DatabaseHelper.getInstance(context);//what should the context be?
-//
-//        Employee employee1 = new Employee(123045678, "John", "Smith", 1973, "NY");
-//        Employee employee2 = new Employee(123045679, "David", "McWill", 1982, "Seattle");
-//        Employee employee3 = new Employee(123045680, "Katerina", "Wise", 1973, "Boston");
-//        Employee employee4 = new Employee(123045681, "Donald", "Lee", 1992, "London");
-//        Employee employee5 = new Employee(123045682, "Gary", "Henwood", 1987, "Las Vegas");
-//        Employee employee6 = new Employee(123045683, "Anthony", "Bright", 1963, "Seattle");
-//        Employee employee7 = new Employee(123045684, "William", "Newey", 1995, "Boston");
-//        Employee employee8 = new Employee(123045685, "Melony", "Smith", 1970, "Chicago");
-//
-//        Job job1 = new Job(123045678, "Fuzz", 60, 1);
-//        Job job2 = new Job(123045679, "GA", 70, 2);
-//        Job job3 = new Job(123045680, "Little Place", 120, 5);
-//        Job job4 = new Job(123045681, "Macy's", 78, 3);
-//        Job job5 = new Job(123045682, "New Life", 65, 1);
-//        Job job6 = new Job(123045683, "Believe", 158, 6);
-//        Job job7 = new Job(123045684, "Macy's", 200, 8);
-//        Job job8 = new Job(123045685, "Stop", 299, 12);
-//
-//        helper.insertRowEmployeeTable(employee1);
-//        helper.insertRowEmployeeTable(employee2);
-//        helper.insertRowEmployeeTable(employee3);
-//        helper.insertRowEmployeeTable(employee4);
-//        helper.insertRowEmployeeTable(employee5);
-//        helper.insertRowEmployeeTable(employee6);
-//        helper.insertRowEmployeeTable(employee7);
-//        helper.insertRowEmployeeTable(employee8);
-//
-//        helper.insertRowJobTable(job1);
-//        helper.insertRowJobTable(job2);
-//        helper.insertRowJobTable(job3);
-//        helper.insertRowJobTable(job4);
-//        helper.insertRowJobTable(job5);
-//        helper.insertRowJobTable(job6);
-//        helper.insertRowJobTable(job7);
-//        helper.insertRowJobTable(job8);
-//    }
-    //make some unit tests for these methods if you wanna
 }
 

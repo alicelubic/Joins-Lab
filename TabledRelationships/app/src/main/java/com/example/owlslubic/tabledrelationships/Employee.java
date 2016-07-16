@@ -10,8 +10,9 @@ public class Employee {
     private int mYearOfBirth;
     private String mCity;
 
+    public Employee(){}
+
     public Employee(int ssn, String first, String last, int yob, String city){
-        //why does the context need to be specified?
 
         this.mSsn = ssn;
         this.mFirst = first;
