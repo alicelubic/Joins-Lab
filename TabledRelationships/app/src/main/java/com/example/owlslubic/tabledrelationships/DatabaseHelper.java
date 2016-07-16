@@ -165,8 +165,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     //method that takes dialog input, converts it to a single string string (aka one row), and inserts it into database //might have to break it up into 2 methods?
 
+
 //    public void populateTable() {
-//        DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);//what should the context be?
+//        Context context = MainActivity.this;
+//        DatabaseHelper helper = DatabaseHelper.getInstance(context);//what should the context be?
 //
 //        Employee employee1 = new Employee(123045678, "John", "Smith", 1973, "NY");
 //        Employee employee2 = new Employee(123045679, "David", "McWill", 1982, "Seattle");
@@ -204,7 +206,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 //        helper.insertRowJobTable(job7);
 //        helper.insertRowJobTable(job8);
 //    }
-
     //make some unit tests for these methods if you wanna
 }
 

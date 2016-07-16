@@ -1,10 +1,12 @@
 package com.example.owlslubic.tabledrelationships;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     TextView mTextViewHighestSalary;
     Button mButtonAddData, mButtonSameCompany, mButtonBoston, mButtonHighestSalary;
     DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonAddData.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               // helper.populateTable();
+                //helper.populateTable();
                 Toast.makeText(MainActivity.this, "Data added!", Toast.LENGTH_SHORT).show();
             }
         });
@@ -56,16 +59,14 @@ public class MainActivity extends AppCompatActivity {
         mButtonHighestSalary.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //getHighestSalary()
+                //textView.setText(getHighestSalary()
+
             }
         });
 
 
-
-
-
         //make a helper method that inserts alreadyknown the table data
-            //populateTable()
+        //populateTable()
 
         //this is where i will call a helper instance
         //instantiate some employees and jobs
@@ -76,16 +77,42 @@ public class MainActivity extends AppCompatActivity {
         //set up fab with dialog here - ref mainlistsactivity of proj1
         //input will be inserted to employee table via helper method
 
+
+
         FloatingActionButton fabMain = (FloatingActionButton) findViewById(R.id.fab_main);
         fabMain.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+
+//            @Override
+//            public void onClick(View view) {
+//                LayoutInflater inflater = LayoutInflater.from(context);
+//                View dialogLayout = inflater.inflate(R.layout.dialog_alert,null);
+//                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+//                builder.setView(dialogLayout);
+//                EditText edittext1 = (EditText) findViewById(R.id.edittext1);
+//                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int i) {
+//                        dialog.dismiss();
+//                    }
+//                });
+//                builder.setPositiveButton("Add data", new DialogInterface.OnClickListener() {
+//                    @Override
+//                    public void onClick(DialogInterface dialog, int i) {
+//
+//                    }
+//                });
+//
+//            }
+                //above shit dont work, below shit did but only one edittext...
+
+//            @Override
+//            public void onClick(View view) {
 //                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-//                final EditText input = new EditText(MainActivity.this);
+//                final EditText input1 = new EditText(MainActivity.this);
 //                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 //                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-//                input.setLayoutParams(lp);
-//                builder.setView(input);
+//                input1.setLayoutParams(lp);
+//                builder.setView(input1);
 //                builder.setPositiveButton("ok", null);
 //                builder.setNegativeButton("cancel", null);
 //
@@ -96,12 +123,11 @@ public class MainActivity extends AppCompatActivity {
 //                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
 //                    @Override
 //                    public void onClick(View view) {
-//                        if (input.getText().toString().length()==0){
-//                            input.setError("Name your list!");
-//                        }
-//                        else {
+//                        if (input1.getText().toString().length() == 0) {
+//                            input1.setError("Name your list!");
+//                        } else {
 //
-//                            adapter.notifyDataSetChanged();
+//                            //adapter.notifyDataSetChanged();
 //                            dialog.dismiss();
 //                        }
 //                    }
@@ -111,10 +137,13 @@ public class MainActivity extends AppCompatActivity {
 //
 //                    public void onClick(View view) {
 //                        dialog.dismiss();
-                    }
-                });
+//                    }
+//                });
+
+//
+//            }
+});
+}}
 
 
 
-    }
-}
