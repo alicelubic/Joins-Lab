@@ -11,12 +11,11 @@ public class Employee {
     private String mCity;
     private int mId;
 
-//    public Employee(){}
+    public Employee(){}
+ //   int id,
+    public Employee(String ssn, String first, String last, int yob, String city){
 
-    public Employee(int id, String ssn, String first, String last, int yob, String city){
-
-        this.mId = id;
-
+      //  this.mId = id;
         this.mSsn = ssn;
         this.mFirst = first;
         this.mLast = last;

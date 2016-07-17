@@ -61,9 +61,10 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void bindView(View view, Context context, Cursor cursor) {
                         TextView textView = (TextView) view.findViewById(android.R.id.text1);
-                        String firstName = cursor.getString(cursor.getColumnIndex(helper.COL_FIRST_NAME));
-                        String lastName = cursor.getString(cursor.getColumnIndex(helper.COL_LAST_NAME));
-                        textView.setText(firstName+" "+lastName);
+                        String firstName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_FIRST_NAME));
+                        String lastName = cursor.getString(cursor.getColumnIndex(DatabaseHelper.COL_LAST_NAME));
+                        String fullName = firstName + " "+lastName + " ";
+                        textView.setText(fullName);
                     }
                 };
 
@@ -98,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
                 TextView textView = (TextView) findViewById(R.id.textview);
-             //   textView.setText(helper.getString(getHighestSalary())); // clearly not how to do that but you get the idea
+                String result = helper.getHighestSalary();
+                textView.setText(result);
 
             }
         });
@@ -183,23 +185,23 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
 
-        Employee employee1 = new Employee(1,"123045678", "John", "Smith", 1973, "NY");
-        Employee employee2 = new Employee(2,"123045679", "David", "McWill", 1982, "Seattle");
-        Employee employee3 = new Employee(3,"123045680", "Katerina", "Wise", 1971, "Boston");//changed birth from 1973
-        Employee employee4 = new Employee(4,"123045681", "Donald", "Lee", 1992, "London");
-        Employee employee5 = new Employee(5,"123045682", "Gary", "Henwood", 1987, "Las Vegas");
-        Employee employee6 = new Employee(6,"123045683", "Anthony", "Bright", 1963, "Seattle");
-        Employee employee7 = new Employee(7,"123045684", "William", "Newey", 1995, "Boston");
-        Employee employee8 = new Employee(8,"123045685", "Melony", "Smith", 1970, "Chicago");
+        Employee employee1 = new Employee("123045678", "John", "Smith", 1973, "NY");
+        Employee employee2 = new Employee("123045679", "David", "McWill", 1982, "Seattle");
+        Employee employee3 = new Employee("123045680", "Katerina", "Wise", 1973, "Boston");
+        Employee employee4 = new Employee("123045681", "Donald", "Lee", 1992, "London");
+        Employee employee5 = new Employee("123045682", "Gary", "Henwood", 1987, "Las Vegas");
+        Employee employee6 = new Employee("123045683", "Anthony", "Bright", 1963, "Seattle");
+        Employee employee7 = new Employee("123045684", "William", "Newey", 1995, "Boston");
+        Employee employee8 = new Employee("123045685", "Melony", "Smith", 1970, "Chicago");
 
-        Job job1 = new Job(123045678, "Fuzz", 60, 1);
-        Job job2 = new Job(123045679, "GA", 70, 2);
-        Job job3 = new Job(123045680, "Little Place", 120, 5);
-        Job job4 = new Job(123045681, "Macy's", 78, 3);
-        Job job5 = new Job(123045682, "New Life", 65, 1);
-        Job job6 = new Job(123045683, "Believe", 158, 6);
-        Job job7 = new Job(123045684, "Macy's", 200, 8);
-        Job job8 = new Job(123045685, "Stop", 299, 12);
+        Job job1 = new Job("123045678", "Fuzz", 60, 1);
+        Job job2 = new Job("123045679", "GA", 70, 2);
+        Job job3 = new Job("123045680", "Little Place", 120, 5);
+        Job job4 = new Job("123045681", "Macy's", 78, 3);
+        Job job5 = new Job("123045682", "New Life", 65, 1);
+        Job job6 = new Job("123045683", "Believe", 158, 6);
+        Job job7 = new Job("123045684", "Macy's", 200, 8);
+        Job job8 = new Job("123045685", "Stop", 299, 12);
 
         helper.insertRowEmployeeTable(employee1);
         helper.insertRowEmployeeTable(employee2);
@@ -219,7 +221,7 @@ public class MainActivity extends AppCompatActivity {
         helper.insertRowJobTable(job7);
         helper.insertRowJobTable(job8);
 
-
+        helper.close();
     }
 
 }

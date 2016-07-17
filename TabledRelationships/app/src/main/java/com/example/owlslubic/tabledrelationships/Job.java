@@ -4,24 +4,24 @@ package com.example.owlslubic.tabledrelationships;
  * Created by owlslubic on 7/15/16.
  */
 public class Job {
-    private int mSsn;
+    private String emp_ssn;
     private String mCompany;
     private int mSalary;
     private int mExperience;
 
-    public Job(int ssn, String company, int salary, int experience){
-        mSsn = ssn;
+    public Job(String empSSN, String company, int salary, int experience){
+        emp_ssn = empSSN;
         mCompany = company;
         mSalary = salary;
         mExperience = experience;
     }
 
-    public int getmSsn() {
-        return mSsn;
+    public String getmSsn() {
+        return emp_ssn;
     }
 
-    public void setmSsn(int mSsn) {
-        this.mSsn = mSsn;
+    public void setmSsn(String mSsn) {
+        this.emp_ssn = mSsn;
     }
 
     public String getmCompany() {
