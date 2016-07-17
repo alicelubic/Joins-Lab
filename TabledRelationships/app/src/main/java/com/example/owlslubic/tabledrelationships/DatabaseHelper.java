@@ -17,7 +17,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "employees.db";
 
     public static final String EMPLOYEE_TABLE_NAME = "employee";
-   // public static final String COL_PK_ID = "_id";
+  // public static final String COL_PK_ID = "_id";
     public static final String COL_SSN = "_id";
     public static final String COL_FIRST_NAME = "First";
     public static final String COL_LAST_NAME = "Last";
@@ -98,10 +98,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
       //  values.put(COL_SSN_JOB, job.getmSsn());
+        values.put(COL_EMP_SSN,job.getmSsn());
         values.put(COL_COMPANY, job.getmCompany());
         values.put(COL_SALARY, job.getmSalary());
         values.put(COL_EXPERIENCE, job.getmExperience());
-        values.put(COL_EMP_SSN,job.getmSsn());
         db.insertOrThrow(JOB_TABLE_NAME, null, values);
         db.close();
 
