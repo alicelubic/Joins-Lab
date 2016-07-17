@@ -101,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                 TextView textView = (TextView) findViewById(R.id.textview);
                 String result = helper.getHighestSalary();
                 textView.setText(result);
+           //     Toast.makeText(MainActivity.this, "Somethin' happened!", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -113,14 +114,8 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 LayoutInflater inflater = LayoutInflater.from(context);
-                View dialogLayout = inflater.inflate(R.layout.dialog_alert, null);
+                final View dialogLayout = inflater.inflate(R.layout.dialog_alert, null);
                 builder.setView(dialogLayout);
-
-                final EditText edittext1 = (EditText) findViewById(R.id.edittext1);
-                final EditText edittext2 = (EditText) findViewById(R.id.edittext2);
-                final EditText edittext3 = (EditText) findViewById(R.id.edittext3);
-                final EditText edittext4 = (EditText) findViewById(R.id.edittext4);
-                final EditText edittext5 = (EditText) findViewById(R.id.edittext5);
 
 
                 builder.setTitle("Add New Employee");
@@ -140,33 +135,39 @@ public class MainActivity extends AppCompatActivity {
                 final AlertDialog dialog = builder.create();
                 dialog.show();
 
-                //problem here with the "employee" part
-//                final Employee employee = new Employee();
-//                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View view) {
-//                        Toast.makeText(MainActivity.this, "Somethin' happened!", Toast.LENGTH_SHORT).show();
-//                        if (edittext1.getText().toString().length() == 0) { //Attempt to invoke virtual method 'android.text.Editable android.widget.EditText.getText()' on a null object reference
-//                            edittext1.setError("Please type in your SSN");
-//                        } else if (edittext2.getText().toString().length() == 0) {
-//                            edittext2.setError("Please type in your first name");
-//                        } else if (edittext3.getText().toString().length() == 0) {
-//                            edittext3.setError("Please type in your last name");
-//                        } else if (edittext4.getText().toString().length() == 0) {
-//                            edittext4.setError("Please type in your year of birth");
-//                        } else if (edittext5.getText().toString().length() == 0) {
-//                            edittext5.setError("Please type in your city");
-//                        } else {
-//                          //  employee.setmSsn(Integer.parseInt(edittext1.getText().toString()));
-//                            employee.setmFirst(edittext2.getText().toString());
-//                            employee.setmLast(edittext3.getText().toString());
-//                            employee.setmYearOfBirth(Integer.parseInt(edittext4.getText().toString()));
-//                            employee.setmCity(edittext5.getText().toString());
-//
-//                            dialog.dismiss();
-//                        }
-//                    }
-//                });
+
+                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Toast.makeText(MainActivity.this, "Somethin' happened!", Toast.LENGTH_SHORT).show();
+                        Employee employee = new Employee();
+                        EditText edittext1 = (EditText) dialogLayout.findViewById(R.id.edittext1);
+                        EditText edittext2 = (EditText) dialogLayout.findViewById(R.id.edittext2);
+                        EditText edittext3 = (EditText) dialogLayout.findViewById(R.id.edittext3);
+                        EditText edittext4 = (EditText) dialogLayout.findViewById(R.id.edittext4);
+                        EditText edittext5 = (EditText) dialogLayout.findViewById(R.id.edittext5);
+                        if (edittext1.getText().toString().length() == 0) { //Attempt to invoke virtual method 'android.text.Editable android.widget.EditText.getText()' on a null object reference
+                            edittext1.setError("Please type in your SSN");
+                        } else if (edittext2.getText().toString().length() == 0) {
+                            edittext2.setError("Please type in your first name");
+                        } else if (edittext3.getText().toString().length() == 0) {
+                            edittext3.setError("Please type in your last name");
+                        } else if (edittext4.getText().toString().length() == 0) {
+                            edittext4.setError("Please type in your year of birth");
+                        } else if (edittext5.getText().toString().length() == 0) {
+                            edittext5.setError("Please type in your city");
+                        } else {
+
+                            employee.setmSsn((edittext1.getText().toString()));
+                            employee.setmFirst(edittext2.getText().toString());
+                            employee.setmLast(edittext3.getText().toString());
+                            employee.setmYearOfBirth(Integer.parseInt(edittext4.getText().toString()));
+                            employee.setmCity(edittext5.getText().toString());
+
+                            dialog.dismiss();
+                        }
+                    }
+                });
 
                 dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
