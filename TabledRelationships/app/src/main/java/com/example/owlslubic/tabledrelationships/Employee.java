@@ -4,30 +4,32 @@ package com.example.owlslubic.tabledrelationships;
  * Created by owlslubic on 7/15/16.
  */
 public class Employee {
-    private int mSsn;
+    private String mSsn;
     private String mFirst;
     private String mLast;
     private int mYearOfBirth;
     private String mCity;
+    private int mId;
 
-    public Employee(){}
+//    public Employee(){}
 
-    public Employee(int ssn, String first, String last, int yob, String city){
+    public Employee(int id, String ssn, String first, String last, int yob, String city){
+
+        this.mId = id;
 
         this.mSsn = ssn;
         this.mFirst = first;
         this.mLast = last;
         this.mYearOfBirth = yob;
-
         this.mCity = city;
     }
 
-
-    public int getmSsn() {
+    public int getmId(){return mId;}
+    public String getmSsn() {
         return mSsn;
     }
 
-    public void setmSsn(int mSsn) {
+    public void setmSsn(String mSsn) {
         this.mSsn = mSsn;
     }
 

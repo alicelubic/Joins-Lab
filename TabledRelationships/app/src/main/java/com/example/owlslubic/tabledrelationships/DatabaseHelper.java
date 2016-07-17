@@ -17,14 +17,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "employees.db";
 
     public static final String EMPLOYEE_TABLE_NAME = "employee";
-    public static final String COL_SSN = "_id";
+    //maybe this will work... adding extra id column
+    public static final String COL_ID = "_id";
+    public static final String COL_SSN = "emp_ssn";//and changing this
     public static final String COL_FIRST_NAME = "First";
     public static final String COL_LAST_NAME = "Last";
-    public static final String COL_YOB = "year of birth";
+    public static final String COL_YOB = "year";
     public static final String COL_CITY = "city";
 
-    public static final String JOB_TABLE_NAME = "job table";
-    public static final String COL_SSN_JOB = "_id"; // do i need?
+    public static final String JOB_TABLE_NAME = "jobtable";
+    public static final String COL_SSN_JOB = "ssn"; // changed from _id to try
     public static final String COL_COMPANY = "Company";
     public static final String COL_SALARY = "Salary";
     public static final String COL_EXPERIENCE = "Experience";
@@ -39,15 +41,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-//        db.execSQL(SQL_CREATE_EMPLOYEES);
-//        db.execSQL(SQL_CREATE_JOBS);
-        db.execSQL("CREATE TABLE " +
-            EMPLOYEE_TABLE_NAME + " (" +
-            COL_SSN + " INTEGER PRIMARY KEY, " +
-            COL_FIRST_NAME + " TEXT, " +
-            COL_LAST_NAME + " TEXT, " +
-            COL_YOB + " INT, " +
-            COL_CITY + " TEXT)");
+        db.execSQL(SQL_CREATE_EMPLOYEES);
+        db.execSQL(SQL_CREATE_JOBS);
+//        db.execSQL("CREATE TABLE " +
+//            EMPLOYEE_TABLE_NAME + " (" +
+//            COL_SSN + " INTEGER PRIMARY KEY, " +
+//            COL_FIRST_NAME + " TEXT, " +
+//            COL_LAST_NAME + " TEXT, " +
+//            COL_YOB + " INT, " +
+//            COL_CITY + " TEXT)");
 
     }
 
@@ -59,20 +61,21 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //create tables
-//    private static final String SQL_CREATE_EMPLOYEES = "CREATE TABLE " +
-//            EMPLOYEE_TABLE_NAME + " (" +
-//            COL_SSN + " INTEGER PRIMARY KEY, " + //setting the datatype as integer here,
-//            COL_FIRST_NAME + " TEXT, " +
-//            COL_LAST_NAME + " TEXT, " +
-//            COL_YOB + " INT, " +
-//            COL_CITY + " TEXT)";
-//    private static final String SQL_CREATE_JOBS = "CREATE TABLE " +
-//            JOB_TABLE_NAME + " (" +
-//            COL_SSN_JOB + " INTEGER PRIMARY KEY, FOREIGN KEY (" + COL_SSN_JOB +
-//            ") REFERENCES " + EMPLOYEE_TABLE_NAME + " (" + COL_SSN + ") )" +
-//            COL_COMPANY + " TEXT, " +
-//            COL_SALARY + " INT, " +
-//            COL_EXPERIENCE + " INT)";
+    private static final String SQL_CREATE_EMPLOYEES = "CREATE TABLE " +
+            EMPLOYEE_TABLE_NAME + " (" +
+            COL_ID + " INTEGER PRIMARY KEY," +
+            COL_SSN + " TEXT,"+
+            COL_FIRST_NAME + " TEXT," +
+            COL_LAST_NAME + " TEXT," +
+            COL_YOB + " INT," +
+            COL_CITY + " TEXT"+")";
+    private static final String SQL_CREATE_JOBS = "CREATE TABLE " +
+            JOB_TABLE_NAME + " (" +
+            COL_SSN_JOB + " INTEGER PRIMARY KEY, FOREIGN KEY (" + COL_SSN_JOB +
+            ") REFERENCES " + EMPLOYEE_TABLE_NAME + " (" + COL_SSN + ") )" +
+            COL_COMPANY + " TEXT, " +
+            COL_SALARY + " INT, " +
+            COL_EXPERIENCE + " INT)";
     private static final String SQL_DELETE_EMPLOYEES = "DROP TABLE IF EXISTS " + EMPLOYEE_TABLE_NAME;
     private static final String SQL_DELETE_JOBS = "DROP TABLE IF EXISTS " + JOB_TABLE_NAME;
 
@@ -84,10 +87,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     //insert row to employee table helper method
-    //near "of": syntax error (code 1): , while compiling: INSERT INTO employee(First,_id,Last,city,year of birth) VALUES (?,?,?,?,?)
+    //fixed - near "of": syntax error (code 1): , while compiling: INSERT INTO employee(First,_id,Last,city,year of birth) VALUES (?,?,?,?,?)
+    //fixed - table employee has no column named year_of_birth (code 1): , while compiling: INSERT INTO employee(First,year_of_birth,_id,Last,city) VALUES (?,?,?,?,?)
+    //current problem - UNIQUE constraint failed: employee._id (code 1555) ... checked the ids, made sure no 2 numbers were the same
+
     public void insertRowEmployeeTable(Employee employee) {
         SQLiteDatabase db = getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put(COL_ID, employee.getmId());
         values.put(COL_SSN, employee.getmSsn());
         values.put(COL_FIRST_NAME, employee.getmFirst());
         values.put(COL_LAST_NAME, employee.getmLast());
@@ -109,11 +116,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.close();
 
     }
-
-
-    //create a helper method that makes a cursor to QUERY and retrieve the info
-    //dont forget to close the cursor
-
 
     //method that queries database and selects fullname of anyone working at macys
     public Cursor getFullNameOfMacysEmployee() {

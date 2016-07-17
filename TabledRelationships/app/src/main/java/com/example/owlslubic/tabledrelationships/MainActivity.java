@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
     ListView mListView;
     TextView mTextViewHighestSalary;
     Button mButtonAddData, mButtonSameCompany, mButtonBoston, mButtonHighestSalary;
-    DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
     private Context context = this;
 
     @Override
@@ -50,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonSameCompany.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
+                final DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
                 Cursor cursor = helper.getFullNameOfMacysEmployee();
                 CursorAdapter adapter = new CursorAdapter(MainActivity.this,cursor,CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER){
 
@@ -75,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         mButtonBoston.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
+                final DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
                 Cursor cursor = helper.getBostonCompanies();
                 CursorAdapter adapter = new CursorAdapter(MainActivity.this,cursor,CursorAdapter.FLAG_REGISTER_CONTENT_OBSERVER){
 
@@ -103,9 +102,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-
-
-
 
 
         FloatingActionButton fabMain = (FloatingActionButton) findViewById(R.id.fab_main);
@@ -143,32 +139,32 @@ public class MainActivity extends AppCompatActivity {
                 dialog.show();
 
                 //problem here with the "employee" part
-                final Employee employee = new Employee();
-                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Toast.makeText(MainActivity.this, "Somethin' happened!", Toast.LENGTH_SHORT).show();
-                        if (edittext1.getText().toString().length() == 0) { //Attempt to invoke virtual method 'android.text.Editable android.widget.EditText.getText()' on a null object reference
-                            edittext1.setError("Please type in your SSN");
-                        } else if (edittext2.getText().toString().length() == 0) {
-                            edittext2.setError("Please type in your first name");
-                        } else if (edittext3.getText().toString().length() == 0) {
-                            edittext3.setError("Please type in your last name");
-                        } else if (edittext4.getText().toString().length() == 0) {
-                            edittext4.setError("Please type in your year of birth");
-                        } else if (edittext5.getText().toString().length() == 0) {
-                            edittext5.setError("Please type in your city");
-                        } else {
-                            employee.setmSsn(Integer.parseInt(edittext1.getText().toString()));
-                            employee.setmFirst(edittext2.getText().toString());
-                            employee.setmLast(edittext3.getText().toString());
-                            employee.setmYearOfBirth(Integer.parseInt(edittext4.getText().toString()));
-                            employee.setmCity(edittext5.getText().toString());
-
-                            dialog.dismiss();
-                        }
-                    }
-                });
+//                final Employee employee = new Employee();
+//                dialog.getButton(DialogInterface.BUTTON_POSITIVE).setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View view) {
+//                        Toast.makeText(MainActivity.this, "Somethin' happened!", Toast.LENGTH_SHORT).show();
+//                        if (edittext1.getText().toString().length() == 0) { //Attempt to invoke virtual method 'android.text.Editable android.widget.EditText.getText()' on a null object reference
+//                            edittext1.setError("Please type in your SSN");
+//                        } else if (edittext2.getText().toString().length() == 0) {
+//                            edittext2.setError("Please type in your first name");
+//                        } else if (edittext3.getText().toString().length() == 0) {
+//                            edittext3.setError("Please type in your last name");
+//                        } else if (edittext4.getText().toString().length() == 0) {
+//                            edittext4.setError("Please type in your year of birth");
+//                        } else if (edittext5.getText().toString().length() == 0) {
+//                            edittext5.setError("Please type in your city");
+//                        } else {
+//                          //  employee.setmSsn(Integer.parseInt(edittext1.getText().toString()));
+//                            employee.setmFirst(edittext2.getText().toString());
+//                            employee.setmLast(edittext3.getText().toString());
+//                            employee.setmYearOfBirth(Integer.parseInt(edittext4.getText().toString()));
+//                            employee.setmCity(edittext5.getText().toString());
+//
+//                            dialog.dismiss();
+//                        }
+//                    }
+//                });
 
                 dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -187,14 +183,14 @@ public class MainActivity extends AppCompatActivity {
 
         DatabaseHelper helper = DatabaseHelper.getInstance(MainActivity.this);
 
-        Employee employee1 = new Employee(123045678, "John", "Smith", 1973, "NY");
-        Employee employee2 = new Employee(123045679, "David", "McWill", 1982, "Seattle");
-        Employee employee3 = new Employee(123045680, "Katerina", "Wise", 1973, "Boston");
-        Employee employee4 = new Employee(123045681, "Donald", "Lee", 1992, "London");
-        Employee employee5 = new Employee(123045682, "Gary", "Henwood", 1987, "Las Vegas");
-        Employee employee6 = new Employee(123045683, "Anthony", "Bright", 1963, "Seattle");
-        Employee employee7 = new Employee(123045684, "William", "Newey", 1995, "Boston");
-        Employee employee8 = new Employee(123045685, "Melony", "Smith", 1970, "Chicago");
+        Employee employee1 = new Employee(1,"123045678", "John", "Smith", 1973, "NY");
+        Employee employee2 = new Employee(2,"123045679", "David", "McWill", 1982, "Seattle");
+        Employee employee3 = new Employee(3,"123045680", "Katerina", "Wise", 1971, "Boston");//changed birth from 1973
+        Employee employee4 = new Employee(4,"123045681", "Donald", "Lee", 1992, "London");
+        Employee employee5 = new Employee(5,"123045682", "Gary", "Henwood", 1987, "Las Vegas");
+        Employee employee6 = new Employee(6,"123045683", "Anthony", "Bright", 1963, "Seattle");
+        Employee employee7 = new Employee(7,"123045684", "William", "Newey", 1995, "Boston");
+        Employee employee8 = new Employee(8,"123045685", "Melony", "Smith", 1970, "Chicago");
 
         Job job1 = new Job(123045678, "Fuzz", 60, 1);
         Job job2 = new Job(123045679, "GA", 70, 2);
